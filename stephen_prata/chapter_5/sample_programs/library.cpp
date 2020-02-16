@@ -57,11 +57,11 @@ void saveEntity(const Book &);
 
 void deleteBook(const std::string &);
 
-void printBook(Book);
+void printBook(const Book&);
 
 // -------------------------------- MAIN ------------------------------ //
 
-int main() {
+int run() {
     createTestDataset();
     int command;
 
@@ -101,7 +101,7 @@ int main() {
     }
 }
 
-void printBook(Book book) {
+void printBook(const Book& book) {
     if (!book.mTitle.empty()) {
         std::cout << "\n-----\nAuthor: " << book.mAuthor << "\nTitle: " << book.mTitle << "\nGenre: " << book.mGenre
                   << std::endl;
