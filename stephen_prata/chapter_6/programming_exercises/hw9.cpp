@@ -1,43 +1,54 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 struct maecenas {
     std::string name{};
-    double donation{};
+    int donation{};
 };
 
-void printGrandPatrons(maecenas *maecenases, size_t size);
+void printGrandPatrons(const maecenas *maecenases, size_t size);
 
-void printPatrons(maecenas *maecenases, size_t size);
+void printPatrons(const maecenas *maecenases, size_t size);
 
 int main() {
+    std::ifstream inFile;
+    std::string fileName;
+
+    std::cout << "Enter filename: ";
+    std::cin >> fileName;
+
+    inFile.open(fileName);
+
+    if (!inFile.is_open()) {
+        std::cout << "ERROR! Cannot open file." << std::endl << "Program terminates." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     size_t sizeOfMaecenases;
 
-    std::cout << "Enter number of maecenases: ";
-
-    std::cin >> sizeOfMaecenases;
+    inFile >> sizeOfMaecenases;
+    inFile.get();
 
     auto *maecenases = new maecenas[sizeOfMaecenases];
     std::string name;
 
     for (int i = 0; i < sizeOfMaecenases; i++) {
-        std::cout << "Maesenas #" << i + 1 << ":\n" << "Name: ";
-        std::cin.get();
-        std::getline(std::cin, maecenases[i].name);
-
-        std::cout << "Donation: ";
-        std::cin >> maecenases[i].donation;
+        std::getline(inFile, maecenases[i].name);
+        inFile >> maecenases[i].donation;
+        inFile.get();
     }
 
     printGrandPatrons(maecenases, sizeOfMaecenases);
     printPatrons(maecenases, sizeOfMaecenases);
 
+    inFile.close();
     delete[] maecenases;
 
     return 0;
 }
 
-void printPatrons(maecenas *maecenases, size_t size) {
+void printPatrons(const maecenas *maecenases, size_t size) {
     std::cout << "Patrons:" << std::endl;
     int countPatrons = 0;
 
@@ -52,8 +63,8 @@ void printPatrons(maecenas *maecenases, size_t size) {
     }
 }
 
-void printGrandPatrons(maecenas *maecenases, size_t size) {
-    std::cout << "Grand Patrons: " << std::endl;
+void printGrandPatrons(const maecenas *maecenases, size_t size) {
+    std::cout << "Grand Patrons:" << std::endl;
     int countGrandPatrons = 0;
 
     for (int i = 0; i < size; i++) {
